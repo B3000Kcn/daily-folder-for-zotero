@@ -3,7 +3,7 @@
 # Daily Folder for Zotero
 
 ![GitHub release](https://img.shields.io/github/v/release/B3000Kcn/daily-folder-for-zotero)
-![GitHub downloads](https://img.shields.io/github/downloads/B3000Kcn/daily-folder-for-zotero)
+![GitHub downloads](https://img.shields.io/github/downloads/B3000Kcn/daily-folder-for-zotero/total)
 ![Zotero](https://img.shields.io/badge/Zotero-7-blue)
 
 A Zotero addon that provides a simple calendar interface to quickly create and navigate to daily collections. This addon is designed to help organize notes, clippings, and literature on a day-by-day basis.
