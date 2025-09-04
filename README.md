@@ -22,7 +22,7 @@ A Zotero addon that provides a simple calendar interface to quickly create and n
 
 ## Installation
 
-1.  Go to the [latest release](https://github.com/your-username/your-repo/releases/latest) page.
+1.  Go to the [latest release](https://github.com/B3000Kcn/daily-folder-for-zotero/releases/latest) page.
 2.  Download the `.xpi` file.
 3.  In Zotero, go to `Tools -> Add-ons`.
 4.  Drag and drop the downloaded `.xpi` file onto the Add-ons window.
