@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Daily Folder For Zotero",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Quickly create and navigate to Zotero daily collections under the root Daily Folder.",
   "author": "B3000Kcn",
   "homepage_url": "https://github.com/B3000Kcn/daily-folder-for-zotero",
