@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+  "name": "Daily Folder For Zotero",
+  "version": "1.0.0",
+  "description": "Quickly create and navigate to Zotero daily collections under the root Daily Folder.",
+  "author": "B3000Kcn",
+  "homepage_url": "https://github.com/B3000Kcn/daily-folder-for-zotero",
+  "applications": {
+    "zotero": {
+      "id": "daily-folder-for-zotero@B3000Kcn.github.io",
+      "strict_min_version": "6.999",
+      "strict_max_version": "*",
+      "update_url": "https://github.com/B3000Kcn/daily-folder-for-zotero/releases/latest/download/update.json"
+    }
+  }
+}

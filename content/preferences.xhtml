@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Daily Folder 偏好设置</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+    body {
+      font: 13px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 16px;
+      color: CanvasText;
+      background: Canvas;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+    .section {
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 14px;
+      background: Field;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 10px;
+      align-items: center;
+      margin: 8px 0;
+    }
+    label {
+      color: GrayText;
+      user-select: none;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid rgba(0,0,0,0.2);
+      border-radius: 6px;
+      background: Field;
+      color: FieldText;
+      outline: none;
+    }
+    input[type="text"]:focus {
+      border-color: #1a73e8;
+      box-shadow: 0 0 0 3px rgba(26,115,232,0.15);
+    }
+    .hint {
+      grid-column: 2 / span 1;
+      font-size: 12px;
+      color: GrayText;
+      margin-top: -2px;
+    }
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    button {
+      padding: 8px 12px;
+      border: 1px solid rgba(0,0,0,0.2);
+      border-radius: 6px;
+      background: ButtonFace;
+      color: ButtonText;
+      cursor: pointer;
+    }
+    button.primary {
+      background: #1a73e8;
+      color: white;
+      border-color: #1669c1;
+    }
+    button.primary:hover { background: #1669c1; }
+    .note {
+      font-size: 12px;
+      color: GrayText;
+      margin-top: 4px;
+    }
+    .ok {
+      color: #137333;
+    }
+    .warn {
+      color: #b06000;
+    }
+    .danger {
+      color: #b3261e;
+    }
+  </style>
+  <script>
+    "use strict";
+    /* globals ChromeUtils, Components */
+
+    let Services;
+    try {
+      ({ Services } = ChromeUtils.import("resource://gre/modules/Services.jsm"));
+    } catch (e) {
+      try {
+        Services = Components.utils.import("resource://gre/modules/Services.jsm", {}).Services;
+      } catch (_) {}
+    }
+
+    const PREF_BRANCH = "extensions.daily-folder.";
+    const DEFAULT_ROOT_COLLECTION_NAME = "Daily Folder";
+    const DEFAULT_DATE_FORMAT = "YYYY-MM-DD";
+
+    function getPrefString(key, fallback) {
+      try {
+        return Services.prefs.getCharPref(PREF_BRANCH + key);
+      } catch (e) {
+        return fallback;
+      }
+    }
+
+    function setPrefString(key, value) {
+      try {
+        Services.prefs.setCharPref(PREF_BRANCH + key, String(value));
+      } catch (e) {
+        console.error("[DailyFolder] setPrefString failed:", e);
+      }
+    }
+
+    function onReady() {
+      const inputRoot = document.getElementById("rootName");
+      const inputFmt  = document.getElementById("dateFormat");
+      const statusEl  = document.getElementById("status");
+
+      inputRoot.value = getPrefString("rootCollectionName", DEFAULT_ROOT_COLLECTION_NAME);
+      inputFmt.value  = getPrefString("dateFormat", DEFAULT_DATE_FORMAT);
+
+      inputRoot.addEventListener("input", () => {
+        const val = inputRoot.value.trim() || DEFAULT_ROOT_COLLECTION_NAME;
+        setPrefString("rootCollectionName", val);
+        showStatus("已保存根 collection 名称：" + val, "ok");
+      });
+
+      inputFmt.addEventListener("input", () => {
+        const val = inputFmt.value.trim() || DEFAULT_DATE_FORMAT;
+        setPrefString("dateFormat", val);
+        showStatus("已保存日期格式：" + val, "ok");
+      });
+
+      document.getElementById("restoreDefaults").addEventListener("click", () => {
+        inputRoot.value = DEFAULT_ROOT_COLLECTION_NAME;
+        inputFmt.value = DEFAULT_DATE_FORMAT;
+        setPrefString("rootCollectionName", DEFAULT_ROOT_COLLECTION_NAME);
+        setPrefString("dateFormat", DEFAULT_DATE_FORMAT);
+        showStatus("已恢复默认设置", "warn");
+      });
+
+      // Only informational action here; creation与导航在主窗口中完成
+      document.getElementById("openHelp").addEventListener("click", () => {
+        alert("使用方法：\n1. 点击 Zotero 顶部工具栏上的 Daily Folder 按钮，打开日历。\n2. 点击某个日期可跳转到对应 Collection，不存在则自动创建。\n3. 底部“今日文件夹”可快速跳转或创建今日的 Collection。");
+      });
+
+      function showStatus(msg, cls) {
+        statusEl.textContent = msg;
+        statusEl.className = "note " + (cls || "");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", onReady);
+  </script>
+</head>
+<body>
+  <h1>Daily Folder 偏好设置</h1>
+
+  <div class="section">
+    <div class="row">
+      <label for="rootName">根 collection 名称</label>
+      <input id="rootName" type="text" placeholder="如：Daily Folder">
+      <div class="hint">在该根 collection 下按日期创建子 collection。</div>
+    </div>
+
+    <div class="row">
+      <label for="dateFormat">日期命名格式</label>
+      <input id="dateFormat" type="text" placeholder="YYYY-MM-DD">
+      <div class="hint">当前版本建议使用 YYYY-MM-DD。将来可能支持更多格式。</div>
+    </div>
+
+    <div class="actions">
+      <button id="restoreDefaults">恢复默认</button>
+      <button id="openHelp" class="primary">使用说明</button>
+    </div>
+    <div id="status" class="note"></div>
+  </div>
+
+  <div class="section">
+    <div class="row">
+      <label>注意</label>
+      <div>
+        偏好修改会立即保存。日期文件夹的创建与跳转，请在 Zotero 主窗口中使用工具栏按钮进行操作。
+      </div>
+    </div>
+  </div>
+</body>
+</html>
