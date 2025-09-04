@@ -3,8 +3,8 @@
     "daily-folder-for-zotero@B3000Kcn.github.io": {
       "updates": [
         {
-          "version": "1.0.1",
-          "update_link": "https://github.com/B3000Kcn/daily-folder-for-zotero/releases/latest/download/daily-folder-for-zotero-1.0.1.xpi",
+          "version": "1.0.2",
+          "update_link": "https://github.com/B3000Kcn/daily-folder-for-zotero/releases/latest/download/daily-folder-for-zotero-1.0.2.xpi",
           "applications": {
             "zotero": {
               "strict_min_version": "6.999"
